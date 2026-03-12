@@ -31,6 +31,7 @@ initSocket(server);
 
 const pgPool = new (require('pg').Pool)({ connectionString: process.env.DATABASE_URL });
 
+app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
@@ -45,7 +46,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'inventra-secret-change-me',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000, secure: process.env.NODE_ENV === 'production' },
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000, secure: true, sameSite: 'none' },
 }));
 
 app.use(passport.initialize());
