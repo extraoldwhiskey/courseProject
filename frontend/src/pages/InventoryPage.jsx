@@ -33,7 +33,6 @@ const InventoryPage = () => {
   const [categories, setCategories] = useState([]);
   const [saveStatus, setSaveStatus] = useState(null);
 
-  // Settings form state
   const [form, setForm] = useState({});
   const [fields, setFields] = useState([]);
   const [customIdElements, setCustomIdElements] = useState([]);

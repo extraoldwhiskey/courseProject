@@ -17,7 +17,7 @@ const LoginPage = () => {
           <p className="text-muted mb-4">{t('auth.loginInfo')}</p>
 
           <div className="d-grid gap-3">
-            <a href="/api/auth/google" className="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
+            <a href={`${import.meta.env.VITE_API_URL}/api/auth/google`} className="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
               <svg width="20" height="20" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M5.26 9.77A7.25 7.25 0 0 1 12 4.75c1.84 0 3.5.68 4.77 1.8L19.59 4C17.56 2.15 15 1 12 1 7.73 1 4.08 3.3 2.18 6.74l3.08 3.03z"/>
                 <path fill="#34A853" d="M12 22.75c3.09 0 5.67-1.01 7.56-2.74l-3.12-2.56A7.25 7.25 0 0 1 12 19.25a7.24 7.24 0 0 1-6.72-4.5L2.18 17.8C4.09 21.24 7.73 22.75 12 22.75z"/>
@@ -27,7 +27,7 @@ const LoginPage = () => {
               {t('auth.loginGoogle')}
             </a>
 
-            <a href="/api/auth/github" className="btn btn-dark btn-lg d-flex align-items-center justify-content-center gap-2">
+            <a href={`${import.meta.env.VITE_API_URL}/api/auth/github`} className="btn btn-dark btn-lg d-flex align-items-center justify-content-center gap-2">
               <i className="bi bi-github fs-5" />
               {t('auth.loginGitHub')}
             </a>
