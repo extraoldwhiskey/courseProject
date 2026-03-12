@@ -83,7 +83,7 @@ const Header = () => {
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
                 <li><button className="dropdown-item" onClick={() => switchLang('en')}>🇬🇧 English</button></li>
-                <li><button className="dropdown-item" onClick={() => switchLang('uz')}>🇷🇺 Русский</button></li>
+                <li><button className="dropdown-item" onClick={() => switchLang('ru')}>🇷🇺 Русский</button></li>
               </ul>
             </li>
 
