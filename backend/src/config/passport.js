@@ -23,7 +23,7 @@ const findOrCreateUser = async (profile, provider) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: `${process.env.BACKEND_URL}/api/auth/google/callback`,
+  callbackURL: `https://carefree-vitality-production-70f0.up.railway.app/api/auth/google/callback`,
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     const user = await findOrCreateUser(profile, 'google');
