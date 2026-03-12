@@ -1,85 +1,93 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../../utils/api';
 import ItemForm from './ItemForm';
 
-const ItemRow = ({ item, fields, canEdit, onDeleted, onUpdated, inventory }) => {
-  const { t } = useTranslation();
-  const [editMode, setEditMode] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const visibleFields = fields.filter((f) => f.showInTable);
+const CellValue = ({ field, item }) => {
+  const key = `${field.fieldType}${field.fieldIndex + 1}`;
+  const val = item[key];
+  if (field.fieldType === 'boolean')
+    return val
+      ? <i className="bi bi-check-circle-fill text-success" />
+      : <i className="bi bi-circle text-muted" />;
+  if (field.fieldType === 'link')
+    return val
+      ? <a href={val} target="_blank" rel="noreferrer" className="text-truncate d-inline-block" style={{ maxWidth: 120 }}>{val}</a>
+      : '—';
+  return <span className="text-truncate d-inline-block" style={{ maxWidth: 160 }}>{val ?? '—'}</span>;
+};
 
-  const handleDelete = async () => {
-    if (!confirm(t('common.confirm') + '?')) return;
-    await api.delete(`/items/${item.id}`);
-    onDeleted(item.id);
-  };
-
-  if (editMode) {
-    return (
-      <tr>
-        <td colSpan={visibleFields.length + 3}>
-          <ItemForm
-            inventoryId={inventory.id}
-            fields={fields}
-            existingItem={item}
-            customIdConf={inventory.customIdConf}
-            onSaved={(updated) => { onUpdated(updated); setEditMode(false); }}
-            onCancel={() => setEditMode(false)}
-          />
-        </td>
-      </tr>
-    );
-  }
-
+const SelectionToolbar = ({ selected, onDelete, onEdit, onClear, t }) => {
+  if (selected.size === 0) return null;
   return (
-    <tr
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ position: 'relative' }}
-    >
-      <td>
-        <Link to={`/item/${item.id}`} className="font-monospace text-decoration-none fw-semibold">
-          {item.customId}
-        </Link>
-      </td>
-      {visibleFields.map((f) => {
-        const key = `${f.fieldType}${f.fieldIndex + 1}`;
-        const val = item[key];
-        if (f.fieldType === 'boolean') return <td key={f.id}>{val ? <i className="bi bi-check-circle-fill text-success" /> : <i className="bi bi-circle text-muted" />}</td>;
-        if (f.fieldType === 'link') return <td key={f.id}>{val ? <a href={val} target="_blank" rel="noreferrer" className="text-truncate d-inline-block" style={{ maxWidth: 120 }}>{val}</a> : '—'}</td>;
-        return <td key={f.id} className="text-truncate" style={{ maxWidth: 160 }}>{val ?? '—'}</td>;
-      })}
-      <td>
-        <Link to={`/user/${item.createdBy?.id}`} className="text-decoration-none small">{item.createdBy?.name}</Link>
-      </td>
-      <td>
-        {/* Animated context actions - appear on row hover, no inline buttons per requirement */}
-        <div className={`d-flex gap-1 justify-content-end transition-opacity ${hovered && canEdit ? 'opacity-100' : 'opacity-0'}`}
-          style={{ transition: 'opacity 0.15s', pointerEvents: hovered && canEdit ? 'auto' : 'none' }}>
-          <button className="btn btn-xs btn-outline-primary py-0 px-1" onClick={() => setEditMode(true)} title={t('common.edit')}>
-            <i className="bi bi-pencil" />
+    <div className="d-flex align-items-center gap-2 p-2 mb-2 rounded-3 bg-primary bg-opacity-10 border border-primary border-opacity-25">
+      <span className="badge bg-primary">{selected.size}</span>
+      <span className="small fw-semibold text-primary">{t('common.selected')}</span>
+      <div className="ms-auto d-flex gap-2">
+        {selected.size === 1 && (
+          <button className="btn btn-sm btn-outline-primary" onClick={onEdit}>
+            <i className="bi bi-pencil me-1" />{t('common.edit')}
           </button>
-          <button className="btn btn-xs btn-outline-danger py-0 px-1" onClick={handleDelete} title={t('common.delete')}>
-            <i className="bi bi-trash" />
-          </button>
-        </div>
-      </td>
-    </tr>
+        )}
+        <button className="btn btn-sm btn-outline-danger" onClick={onDelete}>
+          <i className="bi bi-trash me-1" />{t('common.delete')}
+        </button>
+        <button className="btn btn-sm btn-outline-secondary" onClick={onClear}>
+          <i className="bi bi-x" />
+        </button>
+      </div>
+    </div>
   );
 };
 
 const ItemsTable = ({ items, fields, inventory, canEdit, onItemsChange }) => {
   const { t } = useTranslation();
-  const [showAddForm, setShowAddForm] = useState(false);
   const [localItems, setLocalItems] = useState(items);
+  const [selected, setSelected] = useState(new Set());
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editItem, setEditItem] = useState(null);
+
+  useEffect(() => { setLocalItems(items); }, [items]);
 
   const visibleFields = fields.filter((f) => f.showInTable);
 
-  const handleAdded = (item) => { setLocalItems((prev) => [item, ...prev]); setShowAddForm(false); };
-  const handleDeleted = (id) => setLocalItems((prev) => prev.filter((i) => i.id !== id));
-  const handleUpdated = (updated) => setLocalItems((prev) => prev.map((i) => i.id === updated.id ? updated : i));
+  const toggleOne = (id) =>
+    setSelected((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+
+  const toggleAll = () =>
+    setSelected((prev) =>
+      prev.size === localItems.length ? new Set() : new Set(localItems.map((i) => i.id))
+    );
+
+  const handleAdded = (item) => {
+    setLocalItems((prev) => [item, ...prev]);
+    setShowAddForm(false);
+  };
+
+  const handleUpdated = (updated) => {
+    setLocalItems((prev) => prev.map((i) => i.id === updated.id ? updated : i));
+    setEditItem(null);
+    setSelected(new Set());
+  };
+
+  const handleDeleteSelected = async () => {
+    if (!confirm(t('common.confirm') + '?')) return;
+    await Promise.all([...selected].map((id) => api.delete(`/items/${id}`)));
+    setLocalItems((prev) => prev.filter((i) => !selected.has(i.id)));
+    setSelected(new Set());
+  };
+
+  const handleEditSelected = () => {
+    const id = [...selected][0];
+    setEditItem(localItems.find((i) => i.id === id));
+  };
+
+  const allChecked = localItems.length > 0 && selected.size === localItems.length;
 
   return (
     <div>
@@ -87,7 +95,9 @@ const ItemsTable = ({ items, fields, inventory, canEdit, onItemsChange }) => {
         <div className="mb-3">
           {showAddForm ? (
             <div className="card border-0 bg-light p-3">
-              <h6 className="fw-bold mb-3"><i className="bi bi-plus-circle me-2 text-primary" />{t('item.create')}</h6>
+              <h6 className="fw-bold mb-3">
+                <i className="bi bi-plus-circle me-2 text-primary" />{t('item.create')}
+              </h6>
               <ItemForm
                 inventoryId={inventory.id}
                 fields={fields}
@@ -104,30 +114,90 @@ const ItemsTable = ({ items, fields, inventory, canEdit, onItemsChange }) => {
         </div>
       )}
 
+      {canEdit && (
+        <SelectionToolbar
+          selected={selected}
+          onDelete={handleDeleteSelected}
+          onEdit={handleEditSelected}
+          onClear={() => setSelected(new Set())}
+          t={t}
+        />
+      )}
+
+      {editItem && (
+        <div className="card border-0 bg-light p-3 mb-3">
+          <h6 className="fw-bold mb-3">
+            <i className="bi bi-pencil me-2 text-primary" />{t('common.edit')}
+          </h6>
+          <ItemForm
+            inventoryId={inventory.id}
+            fields={fields}
+            existingItem={editItem}
+            customIdConf={inventory.customIdConf}
+            onSaved={handleUpdated}
+            onCancel={() => { setEditItem(null); setSelected(new Set()); }}
+          />
+        </div>
+      )}
+
       <div className="table-responsive">
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr>
+              {canEdit && (
+                <th style={{ width: 40 }}>
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    checked={allChecked}
+                    onChange={toggleAll}
+                  />
+                </th>
+              )}
               <th>{t('item.customId')}</th>
               {visibleFields.map((f) => <th key={f.id}>{f.name}</th>)}
               <th>{t('item.createdBy')}</th>
-              <th style={{ width: 70 }} />
             </tr>
           </thead>
           <tbody>
             {localItems.length === 0 && (
-              <tr><td colSpan={visibleFields.length + 3} className="text-center text-muted py-4">{t('inventory.noItems')}</td></tr>
+              <tr>
+                <td colSpan={visibleFields.length + (canEdit ? 3 : 2)} className="text-center text-muted py-4">
+                  {t('inventory.noItems')}
+                </td>
+              </tr>
             )}
             {localItems.map((item) => (
-              <ItemRow
+              <tr
                 key={item.id}
-                item={item}
-                fields={fields}
-                canEdit={canEdit}
-                inventory={inventory}
-                onDeleted={handleDeleted}
-                onUpdated={handleUpdated}
-              />
+                className={selected.has(item.id) ? 'table-primary' : ''}
+                onClick={canEdit ? () => toggleOne(item.id) : undefined}
+                style={canEdit ? { cursor: 'pointer' } : {}}
+              >
+                {canEdit && (
+                  <td onClick={(e) => e.stopPropagation()}>
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selected.has(item.id)}
+                      onChange={() => toggleOne(item.id)}
+                    />
+                  </td>
+                )}
+                <td onClick={(e) => e.stopPropagation()}>
+                  <Link to={`/item/${item.id}`} className="font-monospace text-decoration-none fw-semibold">
+                    {item.customId}
+                  </Link>
+                </td>
+                {visibleFields.map((f) => (
+                  <td key={f.id}><CellValue field={f} item={item} /></td>
+                ))}
+                <td onClick={(e) => e.stopPropagation()}>
+                  <Link to={`/user/${item.createdBy?.id}`} className="text-decoration-none small">
+                    {item.createdBy?.name}
+                  </Link>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>

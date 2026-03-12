@@ -146,6 +146,8 @@
     "darkTheme": "Dark",
     "language": "Language",
     "noData": "No data",
-    "reload": "Reload"
+    "reload": "Reload",
+    "selected": "selected"
+
   }
 }
