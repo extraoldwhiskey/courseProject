@@ -1,0 +1,151 @@
+{
+  "nav": {
+    "home": "Bosh sahifa",
+    "search": "Qidiruv",
+    "myPage": "Mening sahifam",
+    "admin": "Admin",
+    "login": "Kirish",
+    "logout": "Chiqish",
+    "searchPlaceholder": "Inventarizatsiya va elementlarni qidiring..."
+  },
+  "home": {
+    "title": "Inventra",
+    "subtitle": "Hamma narsani o'zingizcha boshqaring",
+    "latestInventories": "So'nggi inventarizatsiyalar",
+    "popularInventories": "Eng mashhur",
+    "tagCloud": "Teglar buluti",
+    "noInventories": "Hali inventarizatsiyalar yo'q. Birinchi bo'lib yarating!"
+  },
+  "inventory": {
+    "create": "Yangi inventarizatsiya",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "title": "Sarlavha",
+    "description": "Tavsif",
+    "category": "Kategoriya",
+    "tags": "Teglar",
+    "image": "Muqova rasmi",
+    "isPublic": "Ochiq (barcha foydalanuvchilar element qo'sha oladi)",
+    "items": "Elementlar",
+    "discussion": "Muhokama",
+    "settings": "Sozlamalar",
+    "fields": "Maxsus maydonlar",
+    "access": "Kirish",
+    "customId": "Maxsus ID",
+    "stats": "Statistika",
+    "noItems": "Hali elementlar yo'q.",
+    "addItem": "Element qo'shish",
+    "saveChanges": "Saqlash",
+    "saving": "Saqlanmoqda...",
+    "saved": "Saqlandi",
+    "conflict": "Ziddiyat aniqlandi — qayta yuklang",
+    "version": "Versiya"
+  },
+  "item": {
+    "create": "Yangi element",
+    "edit": "Elementni tahrirlash",
+    "delete": "O'chirish",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "customId": "Maxsus ID",
+    "createdBy": "Yaratdi",
+    "createdAt": "Yaratilgan vaqt",
+    "likes": "Yoqtirishlar",
+    "conflict": "Bu element boshqa foydalanuvchi tomonidan o'zgartirildi. Qayta yuklang."
+  },
+  "fields": {
+    "string": "Matn (bir qator)",
+    "text": "Matn (ko'p qator)",
+    "number": "Raqam",
+    "link": "Havola",
+    "boolean": "Belgilash qutisi",
+    "addField": "Maydon qo'shish",
+    "fieldName": "Maydon nomi",
+    "fieldDesc": "Tavsif (maslahat)",
+    "showInTable": "Jadvalda ko'rsatish",
+    "dragToReorder": "Tartibini o'zgartirish uchun sudrang"
+  },
+  "customId": {
+    "title": "Maxsus ID formati",
+    "preview": "Ko'rinish",
+    "elements": "ID elementlari",
+    "addElement": "Element qo'shish",
+    "fixed": "Doimiy matn",
+    "random20": "20-bitli tasodifiy",
+    "random32": "32-bitli tasodifiy",
+    "random6": "6 xonali tasodifiy",
+    "random9": "9 xonali tasodifiy",
+    "guid": "GUID",
+    "datetime": "Sana/Vaqt",
+    "sequence": "Ketma-ketlik",
+    "leadingZeros": "Bosh nollar",
+    "value": "Matn qiymati",
+    "help": "Tartibini o'zgartirish uchun sudrang. Olib tashlash uchun tashqariga sudrang."
+  },
+  "access": {
+    "title": "Kirish sozlamalari",
+    "addUser": "Foydalanuvchini ism yoki email bo'yicha qo'shish",
+    "removeUser": "Olib tashlash",
+    "sortByName": "Ism bo'yicha saralash",
+    "sortByEmail": "Email bo'yicha saralash",
+    "publicMode": "Ochiq inventarizatsiya"
+  },
+  "discussion": {
+    "addComment": "Izoh qo'shish (Markdown qo'llab-quvvatlanadi)",
+    "post": "Yuborish",
+    "noComments": "Hali izohlar yo'q."
+  },
+  "personal": {
+    "title": "Mening sahifam",
+    "myInventories": "Mening inventarizatsiyalarim",
+    "sharedInventories": "Tahrir qila oladigan inventarizatsiyalar"
+  },
+  "admin": {
+    "title": "Admin paneli",
+    "users": "Foydalanuvchilar",
+    "block": "Bloklash",
+    "unblock": "Blokdan chiqarish",
+    "makeAdmin": "Admin qilish",
+    "removeAdmin": "Adminlikni olib tashlash",
+    "delete": "O'chirish",
+    "email": "Email",
+    "name": "Ism",
+    "status": "Holat",
+    "role": "Rol",
+    "actions": "Amallar"
+  },
+  "search": {
+    "title": "Qidiruv natijalari",
+    "resultsFor": "Natijalar:",
+    "inventories": "Inventarizatsiyalar",
+    "items": "Elementlar",
+    "noResults": "Natijalar topilmadi.",
+    "allTypes": "Barchasi",
+    "inventoriesOnly": "Inventarizatsiyalar",
+    "itemsOnly": "Elementlar"
+  },
+  "auth": {
+    "loginTitle": "Inventra'ga kirish",
+    "loginGoogle": "Google orqali kirish",
+    "loginGitHub": "GitHub orqali kirish",
+    "loginInfo": "Inventarizatsiya yaratish va elementlar qo'shish uchun kiring."
+  },
+  "common": {
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik yuz berdi",
+    "confirm": "Tasdiqlash",
+    "cancel": "Bekor qilish",
+    "save": "Saqlash",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "create": "Yaratish",
+    "back": "Orqaga",
+    "items": "element",
+    "by": "tomonidan",
+    "lightTheme": "Yorug'",
+    "darkTheme": "Qorong'i",
+    "language": "Til",
+    "noData": "Ma'lumot yo'q",
+    "reload": "Qayta yuklash"
+  }
+}

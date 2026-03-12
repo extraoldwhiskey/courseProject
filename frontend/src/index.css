@@ -1,0 +1,57 @@
+:root {
+  --bs-font-sans-serif: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+[data-bs-theme="light"] .navbar {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+[data-bs-theme="dark"] .navbar {
+  background-color: #1a1a2e !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.btn-xs {
+  padding: 0.1rem 0.35rem;
+  font-size: 0.75rem;
+}
+
+.cursor-move {
+  cursor: grab;
+}
+.cursor-move:active {
+  cursor: grabbing;
+}
+
+.markdown-content p:last-child { margin-bottom: 0; }
+.markdown-content code {
+  background: rgba(0,0,0,0.08);
+  border-radius: 3px;
+  padding: 0.1em 0.3em;
+  font-size: 0.9em;
+}
+[data-bs-theme="dark"] .markdown-content code {
+  background: rgba(255,255,255,0.1);
+}
+
+.badge:hover { opacity: 0.85; }
+
+.nav-tabs { scrollbar-width: none; }
+.nav-tabs::-webkit-scrollbar { display: none; }
+
+*:focus-visible {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+.card { border-radius: 0.75rem !important; }
+.shadow-sm { box-shadow: 0 2px 12px rgba(0,0,0,0.07) !important; }
+
+@media (max-width: 768px) {
+  .table td, .table th { padding: 0.5rem 0.4rem; font-size: 0.85rem; }
+}

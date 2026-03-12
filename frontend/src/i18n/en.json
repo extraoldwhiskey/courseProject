@@ -1,0 +1,151 @@
+{
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "myPage": "My Page",
+    "admin": "Admin",
+    "login": "Sign In",
+    "logout": "Sign Out",
+    "searchPlaceholder": "Search inventories and items..."
+  },
+  "home": {
+    "title": "Inventra",
+    "subtitle": "Manage anything, your way",
+    "latestInventories": "Latest Inventories",
+    "popularInventories": "Most Popular",
+    "tagCloud": "Tag Cloud",
+    "noInventories": "No inventories yet. Be the first to create one!"
+  },
+  "inventory": {
+    "create": "New Inventory",
+    "edit": "Edit",
+    "delete": "Delete",
+    "title": "Title",
+    "description": "Description",
+    "category": "Category",
+    "tags": "Tags",
+    "image": "Cover Image",
+    "isPublic": "Public (all users can add items)",
+    "items": "Items",
+    "discussion": "Discussion",
+    "settings": "Settings",
+    "fields": "Custom Fields",
+    "access": "Access",
+    "customId": "Custom ID",
+    "stats": "Statistics",
+    "noItems": "No items yet.",
+    "addItem": "Add Item",
+    "saveChanges": "Save",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "conflict": "Conflict detected — please reload",
+    "version": "Version"
+  },
+  "item": {
+    "create": "New Item",
+    "edit": "Edit Item",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "customId": "Custom ID",
+    "createdBy": "Created by",
+    "createdAt": "Created at",
+    "likes": "Likes",
+    "conflict": "This item was modified by someone else. Please reload."
+  },
+  "fields": {
+    "string": "Text (single line)",
+    "text": "Text (multi-line)",
+    "number": "Number",
+    "link": "Link",
+    "boolean": "Checkbox",
+    "addField": "Add Field",
+    "fieldName": "Field name",
+    "fieldDesc": "Description (tooltip)",
+    "showInTable": "Show in table",
+    "dragToReorder": "Drag to reorder"
+  },
+  "customId": {
+    "title": "Custom ID Format",
+    "preview": "Preview",
+    "elements": "ID Elements",
+    "addElement": "Add Element",
+    "fixed": "Fixed text",
+    "random20": "20-bit random",
+    "random32": "32-bit random",
+    "random6": "6-digit random",
+    "random9": "9-digit random",
+    "guid": "GUID",
+    "datetime": "Date/Time",
+    "sequence": "Sequence",
+    "leadingZeros": "Leading zeros",
+    "value": "Text value",
+    "help": "Drag elements to reorder. Drag outside to remove."
+  },
+  "access": {
+    "title": "Access Settings",
+    "addUser": "Add user by name or email",
+    "removeUser": "Remove",
+    "sortByName": "Sort by name",
+    "sortByEmail": "Sort by email",
+    "publicMode": "Public inventory"
+  },
+  "discussion": {
+    "addComment": "Add comment (Markdown supported)",
+    "post": "Post",
+    "noComments": "No comments yet."
+  },
+  "personal": {
+    "title": "My Page",
+    "myInventories": "My Inventories",
+    "sharedInventories": "Inventories I can edit"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "users": "Users",
+    "block": "Block",
+    "unblock": "Unblock",
+    "makeAdmin": "Make Admin",
+    "removeAdmin": "Remove Admin",
+    "delete": "Delete",
+    "email": "Email",
+    "name": "Name",
+    "status": "Status",
+    "role": "Role",
+    "actions": "Actions"
+  },
+  "search": {
+    "title": "Search Results",
+    "resultsFor": "Results for",
+    "inventories": "Inventories",
+    "items": "Items",
+    "noResults": "No results found.",
+    "allTypes": "All",
+    "inventoriesOnly": "Inventories",
+    "itemsOnly": "Items"
+  },
+  "auth": {
+    "loginTitle": "Sign in to Inventra",
+    "loginGoogle": "Continue with Google",
+    "loginGitHub": "Continue with GitHub",
+    "loginInfo": "Sign in to create inventories and add items."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "back": "Back",
+    "items": "items",
+    "by": "by",
+    "lightTheme": "Light",
+    "darkTheme": "Dark",
+    "language": "Language",
+    "noData": "No data",
+    "reload": "Reload"
+  }
+}

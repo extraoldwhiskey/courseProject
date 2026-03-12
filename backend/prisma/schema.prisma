@@ -1,0 +1,168 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  name       String
+  avatar     String?
+  provider   String
+  providerId String
+  isAdmin    Boolean  @default(false)
+  isBlocked  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  inventories     Inventory[]
+  writeAccess     InventoryAccess[]
+  comments        Comment[]
+  likes           Like[]
+  createdItems    Item[]
+
+  @@unique([provider, providerId])
+  @@index([name])
+  @@index([email])
+}
+
+model Category {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  inventories Inventory[]
+}
+
+model Tag {
+  id          Int            @id @default(autoincrement())
+  name        String         @unique
+  inventories InventoryTag[]
+}
+
+model InventoryTag {
+  inventoryId String
+  tagId       Int
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  tag         Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([inventoryId, tagId])
+}
+
+model Inventory {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  imageUrl    String?
+  isPublic    Boolean  @default(false)
+  categoryId  Int?
+  version     Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  creatorId   String
+
+  creator      User              @relation(fields: [creatorId], references: [id])
+  category     Category?         @relation(fields: [categoryId], references: [id])
+  tags         InventoryTag[]
+  fields       InventoryField[]
+  items        Item[]
+  access       InventoryAccess[]
+  comments     Comment[]
+  customIdConf CustomIdConfig?
+
+  @@index([creatorId])
+  @@index([categoryId])
+  @@index([createdAt(sort: Desc)])
+}
+
+model InventoryAccess {
+  inventoryId String
+  userId      String
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([inventoryId, userId])
+  @@index([userId])
+}
+
+model InventoryField {
+  id          String  @id @default(uuid())
+  inventoryId String
+  name        String
+  description String?
+  fieldType   String
+  fieldIndex  Int
+  showInTable Boolean @default(true)
+  order       Int     @default(0)
+
+  inventory Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+
+  @@unique([inventoryId, fieldType, fieldIndex])
+  @@index([inventoryId, order])
+}
+
+model CustomIdConfig {
+  id          String    @id @default(uuid())
+  inventoryId String    @unique
+  elements    Json      @default("[]")
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+}
+
+model Item {
+  id          String   @id @default(uuid())
+  inventoryId String
+  customId    String
+  createdById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  version     Int      @default(0)
+
+  string1 String?
+  string2 String?
+  string3 String?
+  text1   String?
+  text2   String?
+  text3   String?
+  number1 Float?
+  number2 Float?
+  number3 Float?
+  link1   String?
+  link2   String?
+  link3   String?
+  bool1   Boolean?
+  bool2   Boolean?
+  bool3   Boolean?
+
+  inventory Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  createdBy User      @relation(fields: [createdById], references: [id])
+  likes     Like[]
+
+  @@unique([inventoryId, customId])
+  @@index([inventoryId])
+  @@index([createdById])
+}
+
+model Like {
+  userId String
+  itemId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item   Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@id([userId, itemId])
+  @@index([itemId])
+}
+
+model Comment {
+  id          String   @id @default(uuid())
+  inventoryId String
+  userId      String
+  content     String
+  createdAt   DateTime @default(now())
+
+  inventory Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([inventoryId, createdAt])
+}
