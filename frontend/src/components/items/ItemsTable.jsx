@@ -94,7 +94,7 @@ const ItemsTable = ({ items, fields, inventory, canEdit, onItemsChange }) => {
       {canEdit && (
         <div className="mb-3">
           {showAddForm ? (
-            <div className="card border-0 bg-light p-3">
+            <div className="card border-0 p-3">
               <h6 className="fw-bold mb-3">
                 <i className="bi bi-plus-circle me-2 text-primary" />{t('item.create')}
               </h6>
@@ -125,7 +125,7 @@ const ItemsTable = ({ items, fields, inventory, canEdit, onItemsChange }) => {
       )}
 
       {editItem && (
-        <div className="card border-0 bg-light p-3 mb-3">
+        <div className="card border-0 p-3 mb-3">
           <h6 className="fw-bold mb-3">
             <i className="bi bi-pencil me-2 text-primary" />{t('common.edit')}
           </h6>
@@ -142,7 +142,7 @@ const ItemsTable = ({ items, fields, inventory, canEdit, onItemsChange }) => {
 
       <div className="table-responsive">
         <table className="table table-hover align-middle mb-0">
-          <thead className="table-light">
+          <thead className="table">
             <tr>
               {canEdit && (
                 <th style={{ width: 40 }}>

@@ -59,7 +59,7 @@ const Discussion = ({ inventoryId }) => {
               <Link to={`/user/${c.user.id}`} className="fw-semibold text-decoration-none small">{c.user.name}</Link>
               <span className="text-muted small">{new Date(c.createdAt).toLocaleString()}</span>
             </div>
-            <div className="border rounded p-2 bg-light bg-opacity-50 markdown-content">
+            <div className="border rounded p-2 bg-opacity-50 markdown-content">
               <ReactMarkdown>{c.content}</ReactMarkdown>
             </div>
           </div>

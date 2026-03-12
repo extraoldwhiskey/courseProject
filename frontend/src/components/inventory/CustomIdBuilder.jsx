@@ -38,7 +38,7 @@ const SortableElement = ({ el, onUpdate, onRemove }) => {
 
   return (
     <div ref={setNodeRef} style={style} className="card border shadow-sm me-2 mb-2" style={{ minWidth: 130, maxWidth: 180 }}>
-      <div className="card-header py-1 px-2 d-flex align-items-center justify-content-between bg-light">
+      <div className="card-header py-1 px-2 d-flex align-items-center justify-content-between">
         <span className="cursor-move text-muted" {...attributes} {...listeners}>
           <i className="bi bi-grip-horizontal" />
         </span>
@@ -103,7 +103,7 @@ const CustomIdBuilder = ({ elements, onChange }) => {
 
       <div className="mb-3">
         <label className="form-label fw-semibold">{t('customId.preview')}</label>
-        <div className="form-control font-monospace bg-light text-break">{preview}</div>
+        <div className="form-control font-monospace text-break">{preview}</div>
       </div>
 
       <label className="form-label fw-semibold">{t('customId.elements')}</label>
@@ -111,7 +111,7 @@ const CustomIdBuilder = ({ elements, onChange }) => {
         onDragStart={({ active }) => setActiveId(active.id)}
         onDragEnd={handleDragEnd}>
         <SortableContext items={elements.map((e) => e._id)} strategy={horizontalListSortingStrategy}>
-          <div className="d-flex flex-wrap p-2 border rounded bg-light mb-3" style={{ minHeight: 80 }}>
+          <div className="d-flex flex-wrap p-2 border rounded mb-3" style={{ minHeight: 80 }}>
             {elements.map((el) => (
               <SortableElement key={el._id} el={el} onUpdate={updateElement} onRemove={removeElement} />
             ))}
