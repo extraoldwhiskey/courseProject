@@ -62,7 +62,6 @@ app.use('/api/comments', commentRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/categories', categoryRoutes);
 
-// Make io available in routes
 const { getIo } = require('./socket/index');
 app.use((req, res, next) => { req.app.set('io', getIo()); next(); });
 
@@ -71,5 +70,5 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => console.log(`Inventra backend running on :${PORT}`));
