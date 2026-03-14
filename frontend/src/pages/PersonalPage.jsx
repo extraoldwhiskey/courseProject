@@ -89,7 +89,7 @@ const InventoryTable = ({ inventories, onDeleted, showDeleteButton }) => {
   return (
     <div className="table-responsive">
       <table className="table table-hover align-middle mb-0">
-        <thead className="table-light">
+        <thead className="table">
           <tr>
             <th style={{ cursor: 'pointer' }} onClick={() => toggleSort('title')}>
               {t('inventory.title')}{sortIcon('title')}

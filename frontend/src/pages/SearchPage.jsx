@@ -50,7 +50,7 @@ const SearchPage = () => {
                 ) : (
                   <div className="table-responsive">
                     <table className="table table-hover mb-0 align-middle">
-                      <thead className="table-light">
+                      <thead className="table">
                         <tr>
                           <th>{t('inventory.title')}</th>
                           <th className="d-none d-md-table-cell">{t('inventory.description')}</th>
@@ -88,7 +88,7 @@ const SearchPage = () => {
                 ) : (
                   <div className="table-responsive">
                     <table className="table table-hover mb-0 align-middle">
-                      <thead className="table-light">
+                      <thead className="table">
                         <tr>
                           <th>{t('item.customId')}</th>
                           <th className="d-none d-md-table-cell">{t('inventory.title')}</th>

@@ -295,7 +295,7 @@ const InventoryPage = () => {
 
               <div className="table-responsive">
                 <table className="table table-hover align-middle mb-0">
-                  <thead className="table-light"><tr><th>{t('admin.name')}</th><th>{t('admin.email')}</th><th /></tr></thead>
+                  <thead className="table"><tr><th>{t('admin.name')}</th><th>{t('admin.email')}</th><th /></tr></thead>
                   <tbody>
                     {sortedAccess.map((u) => (
                       <tr key={u.id}>

@@ -33,7 +33,7 @@ const UserPage = () => {
         <div className="card-body p-0">
           <div className="table-responsive">
             <table className="table table-hover align-middle mb-0">
-              <thead className="table-light">
+              <thead className="table">
                 <tr>
                   <th>{t('inventory.title')}</th>
                   <th className="d-none d-md-table-cell">{t('inventory.category')}</th>
