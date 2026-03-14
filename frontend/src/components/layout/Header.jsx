@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg sticky-top shadow-sm" style={{ zIndex: 1040 }}>
+    <nav className="container-xl navbar navbar-expand-lg sticky-top shadow-sm" style={{ zIndex: 1040 }}>
       <div className="container-fluid">
         <Link className="navbar-brand fw-bold d-flex align-items-center gap-2" to="/">
           <i className="bi bi-boxes text-primary fs-4" />
@@ -36,7 +36,7 @@ const Header = () => {
         </button>
 
         <div className="collapse navbar-collapse" id="mainNav">
-          <form className="d-flex mx-auto my-2 my-lg-0" style={{ maxWidth: 480, width: '100%' }} onSubmit={handleSearch}>
+          <form className="d-flex mx-auto my-2 my-lg-0" style={{ maxWidth: 350, width: '100%' }} onSubmit={handleSearch}>
             <div className="input-group">
               <input
                 ref={inputRef}
