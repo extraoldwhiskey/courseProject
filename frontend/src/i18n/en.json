@@ -63,6 +63,7 @@
     "fieldName": "Field name",
     "fieldDesc": "Description (tooltip)",
     "showInTable": "Show in table",
+    "hideFromTable": "Hide from table",
     "dragToReorder": "Drag to reorder"
   },
   "customId": {

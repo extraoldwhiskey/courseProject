@@ -63,6 +63,7 @@
     "fieldName": "Название поля",
     "fieldDesc": "Описание (подсказка)",
     "showInTable": "Показывать в таблице",
+    "hideFromTable": "Скрыть в таблице",
     "dragToReorder": "Перетащите для изменения порядка"
   },
   "customId": {

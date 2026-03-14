@@ -103,8 +103,8 @@ const FieldsEditor = ({ fields, onChange }) => {
             </div>
             <div className="col-auto">
               {field.showInTable !== false
-                ? <span className="badge bg-success"><i className="bi bi-eye me-1" />{t('fields.showInTable')}</span>
-                : <span className="badge bg-secondary"><i className="bi bi-eye-slash me-1" />{t('fields.hidden')}</span>}
+                ? <span className="badge bg-success"><i className="bi bi-eye me-1" /></span>
+                : <span className="badge bg-secondary"><i className="bi bi-eye-slash me-1" /></span>}
             </div>
           </div>
         </div>
