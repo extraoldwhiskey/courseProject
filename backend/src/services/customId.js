@@ -12,12 +12,10 @@ const generators = {
   guid: () => uuidv4(),
   datetime: () => new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19),
   sequence: async (el, inventoryId) => {
-    const last = await prisma.item.aggregate({
-      where: { inventoryId },
-      _max: { customId: true },
-    });
-    const nums = (last._max.customId || '').match(/\d+/g);
-    const next = nums ? parseInt(nums[nums.length - 1]) + 1 : 1;
+    const seqName = `seq_${inventoryId.replace(/-/g, '_')}`;
+    await prisma.$executeRawUnsafe(`CREATE SEQUENCE IF NOT EXISTS "${seqName}" START 1`);
+    const result = await prisma.$queryRawUnsafe(`SELECT nextval('"${seqName}"') AS val`);
+    const next = Number(result[0].val);
     return pad(next, el.leadingZeros ? el.width || 4 : 0);
   },
 };
