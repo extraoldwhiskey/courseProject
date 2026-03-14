@@ -34,6 +34,7 @@ const SelectionToolbar = ({ selected, fields, onDelete, onClear, onToggleShowInT
 const FieldsEditor = ({ fields, onChange }) => {
   const { t } = useTranslation();
   const [selected, setSelected] = useState(new Set());
+  const [fieldsSaved, setFieldsSaved] = useState(false);
 
   const countPerType = (type) => fields.filter((f) => f.fieldType === type).length;
 
