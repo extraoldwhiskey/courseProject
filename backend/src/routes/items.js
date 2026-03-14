@@ -83,7 +83,7 @@ router.post('/', requireAuth, async (req, res, next) => {
 
     const conf = await prisma.customIdConfig.findUnique({ where: { inventoryId } });
     const elements = conf?.elements || [];
-    const customId = providedCustomId || await generate(elements, inventoryId);
+    const customId = providedCustomId || await generate(elements, inventoryId) || uuidv4();
 
     const item = await prisma.item.create({
       data: {
