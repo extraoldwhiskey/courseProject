@@ -115,6 +115,7 @@ const InventoryPage = () => {
     }));
     const { data } = await api.put(`/inventories/${id}/fields`, { fields: cleaned });
     setFields(data.map((f) => ({ ...f, _id: f.id })));
+    setInv((i) => ({ ...i, fields: data }));
   };
 
   const saveCustomId = async () => {

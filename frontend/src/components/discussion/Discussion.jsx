@@ -41,8 +41,9 @@ const Discussion = ({ inventoryId }) => {
     if (!draft.trim() || posting) return;
     setPosting(true);
     try {
-      await api.post('/comments', { inventoryId, content: draft.trim() });
+      const { data } = await api.post('/comments', { inventoryId, content: draft.trim() });
       setDraft('');
+      setComments((prev) => prev.some((x) => x.id === data.id) ? prev : [...prev, data]);
     } finally {
       setPosting(false);
     }
