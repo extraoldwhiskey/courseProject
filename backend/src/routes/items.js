@@ -3,6 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const { requireAuth } = require('../middleware/auth');
 const { getInventoryWithAccess, canWrite, isOwnerOrAdmin } = require('../services/access');
 const { generate } = require('../services/customId');
+const { v4: uuidv4 } = require('uuid');
 
 const prisma = new PrismaClient();
 const router = express.Router();
