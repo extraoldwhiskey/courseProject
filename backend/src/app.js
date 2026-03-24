@@ -21,6 +21,7 @@ const tagRoutes = require('./routes/tags');
 const commentRoutes = require('./routes/comments');
 const uploadRoutes = require('./routes/upload');
 const categoryRoutes = require('./routes/categories');
+const salesforceRoutes = require('./routes/salesforce');
 
 const initSocket = require('./socket/index');
 
@@ -62,6 +63,7 @@ app.use('/api/tags', tagRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/salesforce', salesforceRoutes);
 
 const { getIo } = require('./socket/index');
 app.use((req, res, next) => { req.app.set('io', getIo()); next(); });
