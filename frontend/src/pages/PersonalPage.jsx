@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import TagInput from '../components/common/TagInput';
+import SalesforceModal from '../components/common/SalesforceModal';
 
 const CreateInventoryModal = ({ onCreated, categories }) => {
   const { t } = useTranslation();
@@ -134,6 +135,12 @@ const PersonalPage = () => {
   const [shared, setShared] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sfModal, setSfModal] = useState(false);
+  const [sfConfigured, setSfConfigured] = useState(false);
+  
+  useEffect(() => {
+    api.get('/salesforce/status').then(({ data }) => setSfConfigured(data.configured)).catch(() => {});
+  }, []);
 
   useEffect(() => {
     Promise.all([
@@ -150,16 +157,30 @@ const PersonalPage = () => {
   if (!user) return <Navigate to="/login" replace />;
   if (loading) return <div className="container py-5 text-center"><div className="spinner-border" /></div>;
 
-  return (
+    return (
     <div className="container py-4">
-      <div className="d-flex align-items-center gap-3 mb-4">
+      {sfModal && <SalesforceModal user={user} onClose={() => setSfModal(false)} />}
+
+      <div className="d-flex align-items-center gap-3 mb-4 flex-wrap">
         {user.avatar && <img src={user.avatar} className="rounded-circle" width={56} height={56} alt="" />}
-        <div>
+        <div className="flex-grow-1">
           <h4 className="fw-bold mb-0">{user.name}</h4>
           <p className="text-muted small mb-0">{user.email}</p>
         </div>
+        {sfConfigured && (
+          <button
+            className="btn btn-sm fw-semibold text-white d-flex align-items-center gap-2"
+            style={{ background: '#00A1E0', border: 'none' }}
+            onClick={() => setSfModal(true)}
+            title="Add this user to Salesforce CRM as Account + Contact"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93s3.06-7.44 7-7.93v15.86zm2 0V4.07c3.94.49 7 3.85 7 7.93s-3.06 7.44-7 7.93z"/>
+            </svg>
+            Add to Salesforce CRM
+          </button>
+        )}
       </div>
-
       <div className="card border-0 shadow-sm mb-4">
         <div className="card-header bg-transparent d-flex align-items-center justify-content-between">
           <span className="fw-bold"><i className="bi bi-collection me-2 text-primary" />{t('personal.myInventories')} ({owned.length})</span>
@@ -171,7 +192,6 @@ const PersonalPage = () => {
           <InventoryTable inventories={owned} showDeleteButton />
         </div>
       </div>
-
       <div className="card border-0 shadow-sm">
         <div className="card-header bg-transparent fw-bold">
           <i className="bi bi-people me-2 text-success" />{t('personal.sharedInventories')} ({shared.length})
