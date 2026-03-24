@@ -16,6 +16,38 @@ router.get('/status', (req, res) => {
   res.json({ configured });
 });
 
+router.get('/debug-auth', async (req, res) => {
+  const axios = require('axios');
+  const loginUrl = process.env.SF_LOGIN_URL || 'https://login.salesforce.com';
+  const combined = (process.env.SF_PASSWORD || '') + (process.env.SF_SECURITY_TOKEN || '');
+  const params = new URLSearchParams({
+    grant_type:    'password',
+    client_id:     process.env.SF_CLIENT_ID     || '',
+    client_secret: process.env.SF_CLIENT_SECRET || '',
+    username:      process.env.SF_USERNAME       || '',
+    password:      combined,
+  });
+  const debug = {
+    loginUrl,
+    username:          process.env.SF_USERNAME       || '(missing)',
+    client_id_len:    (process.env.SF_CLIENT_ID     || '').length,
+    client_secret_len:(process.env.SF_CLIENT_SECRET || '').length,
+    password_len:     (process.env.SF_PASSWORD      || '').length,
+    token_len:        (process.env.SF_SECURITY_TOKEN|| '').length,
+    combined_len:      combined.length,
+  };
+  try {
+    const { data } = await axios.post(
+      loginUrl + '/services/oauth2/token',
+      params.toString(),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
+    res.json({ ok: true, instance_url: data.instance_url, debug });
+  } catch (e) {
+    res.status(400).json({ ok: false, sfError: e.response?.data, debug });
+  }
+});
+
 router.post('/create-contact', requireAuth, async (req, res, next) => {
   try {
     const targetUserId = req.body.userId || req.user.id;
