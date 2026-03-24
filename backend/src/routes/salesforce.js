@@ -19,32 +19,41 @@ router.get('/status', (req, res) => {
 router.get('/debug-auth', async (req, res) => {
   const axios = require('axios');
   const loginUrl = process.env.SF_LOGIN_URL || 'https://login.salesforce.com';
+  const version  = process.env.SF_API_VERSION || 'v59.0';
+  const username = process.env.SF_USERNAME || '';
   const combined = (process.env.SF_PASSWORD || '') + (process.env.SF_SECURITY_TOKEN || '');
-  const params = new URLSearchParams({
-    grant_type:    'password',
-    client_id:     process.env.SF_CLIENT_ID     || '',
-    client_secret: process.env.SF_CLIENT_SECRET || '',
-    username:      process.env.SF_USERNAME       || '',
-    password:      combined,
-  });
+
   const debug = {
+    method: 'SOAP',
     loginUrl,
-    username:          process.env.SF_USERNAME       || '(missing)',
-    client_id_len:    (process.env.SF_CLIENT_ID     || '').length,
-    client_secret_len:(process.env.SF_CLIENT_SECRET || '').length,
-    password_len:     (process.env.SF_PASSWORD      || '').length,
-    token_len:        (process.env.SF_SECURITY_TOKEN|| '').length,
-    combined_len:      combined.length,
+    username,
+    password_len:  (process.env.SF_PASSWORD      || '').length,
+    token_len:     (process.env.SF_SECURITY_TOKEN || '').length,
+    combined_len:  combined.length,
   };
+
+  const soapBody = `<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:partner.soap.sforce.com">
+  <soapenv:Body>
+    <urn:login>
+      <urn:username>${username}</urn:username>
+      <urn:password>${combined}</urn:password>
+    </urn:login>
+  </soapenv:Body>
+</soapenv:Envelope>`;
+
   try {
     const { data } = await axios.post(
-      loginUrl + '/services/oauth2/token',
-      params.toString(),
-      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+      `${loginUrl}/services/Soap/u/${version}`,
+      soapBody,
+      { headers: { 'Content-Type': 'text/xml', SOAPAction: 'login' } }
     );
-    res.json({ ok: true, instance_url: data.instance_url, debug });
+    const hasSession = data.includes('<sessionId>');
+    res.json({ ok: hasSession, method: 'SOAP', hasSession, debug });
   } catch (e) {
-    res.status(400).json({ ok: false, sfError: e.response?.data, debug });
+    res.status(400).json({ ok: false, method: 'SOAP',
+      sfError: e.response?.data?.substring?.(0, 500) || e.message, debug });
   }
 });
 
