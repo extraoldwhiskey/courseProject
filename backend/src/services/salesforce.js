@@ -8,33 +8,20 @@ const SF_LOGIN_URL = process.env.SF_LOGIN_URL || 'https://login.salesforce.com';
 const API_VERSION  = process.env.SF_API_VERSION || 'v59.0';
 
 const fetchToken = async () => {
-  const username = process.env.SF_USERNAME;
-  const password = (process.env.SF_PASSWORD || '') + (process.env.SF_SECURITY_TOKEN || '');
-
-  const soapBody = `<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-                  xmlns:urn="urn:partner.soap.sforce.com">
-  <soapenv:Body>
-    <urn:login>
-      <urn:username>${username}</urn:username>
-      <urn:password>${password}</urn:password>
-    </urn:login>
-  </soapenv:Body>
-</soapenv:Envelope>`;
+  const params = new URLSearchParams({
+    grant_type:    'client_credentials',
+    client_id:     process.env.SF_CLIENT_ID,
+    client_secret: process.env.SF_CLIENT_SECRET,
+  });
 
   const { data } = await axios.post(
-    `${SF_LOGIN_URL}/services/Soap/u/${API_VERSION}`,
-    soapBody,
-    { headers: { 'Content-Type': 'text/xml', SOAPAction: 'login' } }
+    `${SF_LOGIN_URL}/services/oauth2/token`,
+    params.toString(),
+    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
   );
 
-  const sessionMatch = data.match(/<sessionId>([^<]+)<\/sessionId>/);
-  const serverMatch  = data.match(/<serverUrl>([^<]+)<\/serverUrl>/);
-
-  if (!sessionMatch) throw new Error('SOAP login failed — no sessionId in response');
-
-  _token       = sessionMatch[1];
-  _instanceUrl = serverMatch[1].replace(/\/services\/Soap.*/, '');
+  _token       = data.access_token;
+  _instanceUrl = data.instance_url;
   _tokenExpiry = Date.now() + 55 * 60 * 1000;
 };
 
