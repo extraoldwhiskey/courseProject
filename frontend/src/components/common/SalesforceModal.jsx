@@ -32,9 +32,9 @@ const SalesforceModal = ({ user, onClose }) => {
     website:    '',
     industry:   '',
   });
-  const [status, setStatus]   = useState('idle');
-  const [result, setResult]   = useState(null);
-  const [errMsg, setErrMsg]   = useState('');
+  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const [result, setResult] = useState(null);
+  const [errMsg, setErrMsg] = useState('');
 
   const set = (key) => (val) => setForm((f) => ({ ...f, [key]: val }));
 
@@ -42,10 +42,7 @@ const SalesforceModal = ({ user, onClose }) => {
     if (!form.firstName.trim() || !form.lastName.trim()) return;
     setStatus('loading');
     try {
-      const { data } = await api.post('/salesforce/create-contact', {
-        userId:     user.id,
-        ...form,
-      });
+      const { data } = await api.post('/salesforce/create-contact', { userId: user.id, ...form });
       setResult(data);
       setStatus('success');
     } catch (e) {
@@ -58,6 +55,7 @@ const SalesforceModal = ({ user, onClose }) => {
     <div className="modal fade show d-block" tabIndex={-1} style={{ background: 'rgba(0,0,0,0.5)' }}>
       <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div className="modal-content">
+
           <div className="modal-header border-0 pb-0">
             <div className="d-flex align-items-center gap-2">
               <div className="rounded-circle d-flex align-items-center justify-content-center"
@@ -67,30 +65,30 @@ const SalesforceModal = ({ user, onClose }) => {
                 </svg>
               </div>
               <div>
-                <h5 className="modal-title fw-bold mb-0">Add to Salesforce CRM</h5>
-                <small className="text-muted">Creates an Account + Contact in your SF org</small>
+                <h5 className="modal-title fw-bold mb-0">{t('salesforce.modalTitle')}</h5>
+                <small className="text-muted">{t('salesforce.modalSubtitle')}</small>
               </div>
             </div>
             <button className="btn-close" onClick={onClose} />
           </div>
 
           <div className="modal-body">
+
             {status === 'success' && result && (
               <div className="text-center py-3">
                 <div className="mb-3" style={{ fontSize: 48 }}>✅</div>
-                <h5 className="fw-bold text-success">Successfully created in Salesforce!</h5>
-                <p className="text-muted mb-4">Account and Contact are now available in your SF org.</p>
-
+                <h5 className="fw-bold text-success">{t('salesforce.successTitle')}</h5>
+                <p className="text-muted mb-4">{t('salesforce.successSubtitle')}</p>
                 <div className="row g-3 text-start">
                   <div className="col-md-6">
                     <div className="card border-0 bg-light h-100">
                       <div className="card-body">
-                        <p className="fw-semibold mb-1 small text-muted text-uppercase">Account</p>
+                        <p className="fw-semibold mb-1 small text-muted text-uppercase">{t('salesforce.accountLabel')}</p>
                         <p className="font-monospace small mb-2 text-break">{result.accountId}</p>
                         <a href={`${result.instanceUrl}/${result.accountId}`}
                            target="_blank" rel="noreferrer"
                            className="btn btn-sm btn-outline-primary w-100">
-                          <i className="bi bi-box-arrow-up-right me-1" />View Account in SF
+                          <i className="bi bi-box-arrow-up-right me-1" />{t('salesforce.viewAccount')}
                         </a>
                       </div>
                     </div>
@@ -98,12 +96,12 @@ const SalesforceModal = ({ user, onClose }) => {
                   <div className="col-md-6">
                     <div className="card border-0 bg-light h-100">
                       <div className="card-body">
-                        <p className="fw-semibold mb-1 small text-muted text-uppercase">Contact</p>
+                        <p className="fw-semibold mb-1 small text-muted text-uppercase">{t('salesforce.contactLabel')}</p>
                         <p className="font-monospace small mb-2 text-break">{result.contactId}</p>
                         <a href={`${result.instanceUrl}/${result.contactId}`}
                            target="_blank" rel="noreferrer"
                            className="btn btn-sm btn-outline-success w-100">
-                          <i className="bi bi-box-arrow-up-right me-1" />View Contact in SF
+                          <i className="bi bi-box-arrow-up-right me-1" />{t('salesforce.viewContact')}
                         </a>
                       </div>
                     </div>
@@ -111,74 +109,71 @@ const SalesforceModal = ({ user, onClose }) => {
                 </div>
               </div>
             )}
+
             {status === 'error' && (
               <div className="alert alert-danger d-flex gap-2 align-items-start">
                 <i className="bi bi-exclamation-triangle-fill flex-shrink-0 mt-1" />
                 <div>
-                  <strong>Salesforce error:</strong> {errMsg}
+                  <strong>{t('salesforce.errorPrefix')}</strong> {errMsg}
                   <div className="mt-2">
                     <button className="btn btn-sm btn-outline-danger"
-                            onClick={() => setStatus('idle')}>Try again</button>
+                            onClick={() => setStatus('idle')}>
+                      {t('salesforce.tryAgain')}
+                    </button>
                   </div>
                 </div>
               </div>
             )}
+
             {(status === 'idle' || status === 'loading') && (
               <>
                 <div className="alert alert-info py-2 px-3 mb-4">
                   <small>
                     <i className="bi bi-info-circle me-1" />
-                    This will create an <b>Account</b> (company) and a <b>Contact</b> linked to it
-                    in your Salesforce org. Email <b>{user.email}</b> will be set automatically.
+                    {t('salesforce.infoText')} <b>{user.email}</b>
                   </small>
                 </div>
 
                 <div className="row g-0">
                   <div className="col-md-6 pe-md-3">
-                    <p className="fw-semibold text-muted small text-uppercase mb-2">Contact Info</p>
-                    <Field label="First Name" id="firstName" required
+                    <p className="fw-semibold text-muted small text-uppercase mb-2">{t('salesforce.contactInfo')}</p>
+                    <Field label={t('salesforce.firstName')} id="firstName" required
                       value={form.firstName} onChange={set('firstName')} />
-                    <Field label="Last Name" id="lastName" required
+                    <Field label={t('salesforce.lastName')} id="lastName" required
                       value={form.lastName} onChange={set('lastName')} />
-                    <Field label="Phone" id="phone" type="tel"
-                      value={form.phone} onChange={set('phone')}
-                      placeholder="+1 555 000 0000" />
-                    <Field label="Job Title" id="jobTitle"
-                      value={form.jobTitle} onChange={set('jobTitle')}
-                      placeholder="e.g. Software Engineer" />
-                    <Field label="Department" id="department"
-                      value={form.department} onChange={set('department')}
-                      placeholder="e.g. Engineering" />
+                    <Field label={t('salesforce.phone')} id="phone" type="tel"
+                      value={form.phone} onChange={set('phone')} placeholder="+1 555 000 0000" />
+                    <Field label={t('salesforce.jobTitle')} id="jobTitle"
+                      value={form.jobTitle} onChange={set('jobTitle')} />
+                    <Field label={t('salesforce.department')} id="department"
+                      value={form.department} onChange={set('department')} />
                   </div>
 
-                  <div className="col-md-6 ps-md-3 border-start-md">
-                    <p className="fw-semibold text-muted small text-uppercase mb-2">Account (Company)</p>
-                    <Field label="Company Name" id="company"
-                      value={form.company} onChange={set('company')}
-                      placeholder="Your company name" />
-                    <Field label="Website" id="website" type="url"
-                      value={form.website} onChange={set('website')}
-                      placeholder="https://example.com" />
+                  <div className="col-md-6 ps-md-3">
+                    <p className="fw-semibold text-muted small text-uppercase mb-2">{t('salesforce.accountInfo')}</p>
+                    <Field label={t('salesforce.companyName')} id="company"
+                      value={form.company} onChange={set('company')} />
+                    <Field label={t('salesforce.website')} id="website" type="url"
+                      value={form.website} onChange={set('website')} placeholder="https://example.com" />
                     <div className="mb-3">
-                      <label className="form-label fw-semibold small" htmlFor="industry">Industry</label>
+                      <label className="form-label fw-semibold small" htmlFor="industry">{t('salesforce.industry')}</label>
                       <select className="form-select form-select-sm" id="industry"
                         value={form.industry} onChange={(e) => set('industry')(e.target.value)}>
-                        <option value="">— Select —</option>
+                        <option value="">{t('salesforce.selectIndustry')}</option>
                         {INDUSTRIES.map((i) => <option key={i} value={i}>{i}</option>)}
                       </select>
                     </div>
-
                     <div className="card border-0 rounded-3 mt-3"
                          style={{ background: '#f0f8ff', borderLeft: '3px solid #00A1E0' }}>
                       <div className="card-body py-2 px-3">
                         <p className="small fw-semibold mb-1" style={{ color: '#00A1E0' }}>
-                          What will be created:
+                          {t('salesforce.willCreate')}
                         </p>
                         <ul className="mb-0 small text-muted" style={{ paddingLeft: 16 }}>
-                          <li>Account — company record</li>
-                          <li>Contact — person linked to account</li>
-                          <li>LeadSource set to "Web"</li>
-                          <li>Email: <b>{user.email}</b></li>
+                          <li>{t('salesforce.willCreateAccount')}</li>
+                          <li>{t('salesforce.willCreateContact')}</li>
+                          <li>{t('salesforce.willCreateLead')}</li>
+                          <li>{t('salesforce.willCreateEmail')} <b>{user.email}</b></li>
                         </ul>
                       </div>
                     </div>
@@ -187,21 +182,25 @@ const SalesforceModal = ({ user, onClose }) => {
               </>
             )}
           </div>
+
           {status !== 'success' && (
             <div className="modal-footer border-0 pt-0">
-              <button className="btn btn-outline-secondary" onClick={onClose}>Cancel</button>
+              <button className="btn btn-outline-secondary" onClick={onClose}>
+                {t('salesforce.cancel')}
+              </button>
               {(status === 'idle' || status === 'loading') && (
                 <button className="btn text-white fw-semibold px-4"
                         style={{ background: '#00A1E0' }}
                         onClick={submit}
                         disabled={status === 'loading' || !form.firstName.trim() || !form.lastName.trim()}>
                   {status === 'loading'
-                    ? <><span className="spinner-border spinner-border-sm me-2" />Sending to Salesforce…</>
-                    : <><i className="bi bi-cloud-upload me-2" />Push to Salesforce CRM</>}
+                    ? <><span className="spinner-border spinner-border-sm me-2" />{t('salesforce.sending')}</>
+                    : <><i className="bi bi-cloud-upload me-2" />{t('salesforce.pushButton')}</>}
                 </button>
               )}
             </div>
           )}
+
         </div>
       </div>
     </div>

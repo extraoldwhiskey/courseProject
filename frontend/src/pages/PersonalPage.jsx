@@ -177,7 +177,7 @@ const PersonalPage = () => {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93s3.06-7.44 7-7.93v15.86zm2 0V4.07c3.94.49 7 3.85 7 7.93s-3.06 7.44-7 7.93z"/>
             </svg>
-            Add to Salesforce CRM
+            {t('salesforce.connected')}
           </button>
         )}
       </div>
