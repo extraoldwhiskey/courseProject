@@ -9,9 +9,7 @@ const router = express.Router();
 router.get('/status', (req, res) => {
   const configured = !!(
     process.env.SF_CLIENT_ID &&
-    process.env.SF_CLIENT_SECRET &&
-    process.env.SF_USERNAME &&
-    process.env.SF_PASSWORD
+    process.env.SF_CLIENT_SECRET
   );
   res.json({ configured });
 });
